@@ -46,4 +46,18 @@ dataframe4 %>% select("lon", "lat", "Location.Name") -> plotting
 plotting %>% drop_na() -> plotting2
 
 locations_sf <- st_as_sf(plotting2, coords = c("lon", "lat"), crs = 4326)
-mapview(locations_sf)
+mapview(locations_sf, legend = F)
+
+#==================
+##Lasso
+library(glmnet)
+
+qqqq <- as.data.frame.matrix(table(dataframe4$Zip.Code))
+qqqq$Var2 <- as.numeric(as.character(qqqq$Var1))
+yeshaha <- inner_join(density, qqqq, by = c("Zip.Code" = "Var2"))
+yeshaha$pop <- as.numeric(gsub(",", "", yeshaha$Population))
+yeshaha$sqmile <- yeshaha$pop / yeshaha$People...Sq..Mile
+yeshaha$smokedensity <- yeshaha$Freq / yeshaha$sqmile
+yeshaha2 <- yeshaha
+yeshaha3 <- inner_join(yeshaha2, zip_codes[, c(2,6)], by = "Zip.Code")
+plot(yeshaha3$Avg..Income.H.hold, yeshaha3$smokedensity)
