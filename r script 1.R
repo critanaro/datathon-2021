@@ -42,12 +42,13 @@ dataframe4 <- right_join(zip_codes, dataframe3, by = "Zip.Code")
 library(sf)
 library(mapview)
 library(tidyr)
-dataframe4 %>% select("lon", "lat", "Location.Name") -> plotting 
-plotting %>% drop_na() -> plotting2
+#dataframe4 %>% select("lon", "lat", "Location.Name") -> plotting 
+#plotting %>% drop_na() -> plotting2
 
-locations_sf <- st_as_sf(plotting2, coords = c("lon", "lat"), crs = 4326)
-mapview(locations_sf, legend = F)
-
+#plotting2 <- read.csv("~/datathon-2021/plotting2.csv")
+locations_sf <- st_as_sf(plotting2[,2:4], coords = c("lon", "lat"), crs = 4326)
+a <- mapview(locations_sf, legend = F)
+a
 #==================
 ##Lasso
 library(glmnet)
